@@ -71,7 +71,7 @@ function App() {
         {/* 封面图片区域 */}
         <div className="w-full flex justify-center mb-2 md:mb-4">
           <img
-            src="/cover.png"
+            src="./cover.png"
             alt="封面"
             className="rounded-2xl shadow"
             style={{

@@ -38,9 +38,14 @@ const ResultCard: React.FC<ResultCardProps> = ({ result, mbtiType, onRestart }) 
               }}
             >
               <img
-                src={`/avatars/${mbtiType.toLowerCase()}.png`}
+                src={`./avatars/${mbtiType.toLowerCase()}.png`}
                 alt={`${mbtiType} 形象`}
-                style={{ width: '100%', height: '100%', objectFit: 'contain', background: 'none' }}
+                style={{ 
+                  width: '100%', 
+                  height: '100%', 
+                  objectFit: 'contain', 
+                  background: 'none' 
+                }}
                 onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
               />
             </div>
@@ -65,7 +70,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ result, mbtiType, onRestart }) 
             <h2 className="text-lg font-semibold text-cyan-200 mb-2">🤝 最佳搭档</h2>
             <div className="flex items-center">
               <img
-                src={`/avatars/${partnerKey}.png`}
+                src={`./avatars/${partnerKey}.png`}
                 alt={`${partnerKey} 形象`}
                 style={{
                   width: '2.5em',
