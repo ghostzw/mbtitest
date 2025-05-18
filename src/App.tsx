@@ -1,16 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Questionnaire from './components/Questionnaire';
 import ResultCard from './components/ResultCard';
 import { mbtiResults } from './data/mbtiData';
 import './index.css';
 import Player from 'lottie-react';
 import loadingLottie from './assets/lottie/loading.json';
+import { preloadImages, getAllImageUrls } from './utils/imagePreloader';
 
 function App() {
   const [answers, setAnswers] = useState<number[] | null>(null);
   const [mbtiType, setMbtiType] = useState<string | null>(null);
   const [showIntro, setShowIntro] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+
+  // 在组件挂载时预加载所有图片
+  useEffect(() => {
+    const loadImages = async () => {
+      setLoading(true);
+      try {
+        await preloadImages(getAllImageUrls());
+        setImagesLoaded(true);
+      } catch (error) {
+        console.error('Error preloading images:', error);
+        // 即使预加载失败也继续显示应用
+        setImagesLoaded(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadImages();
+  }, []);
 
   const calculateMbtiType = (answers: number[]): string => {
     // 根据 10 个问题计算 MBTI 类型
@@ -131,7 +152,7 @@ function App() {
   const LoadingScreen = () => (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-main-gradient bg-pattern animate-fadein">
       <div className="mb-6 md:mb-8 text-xl md:text-3xl font-bold text-white drop-shadow-lg animate-pulse">
-        正在计算你的办公室MBTI人格...
+        {loading ? '正在加载资源...' : '正在计算你的办公室MBTI人格...'}
       </div>
       <div className="w-32 h-32 md:w-48 md:h-48 flex items-center justify-center">
         <Player
@@ -143,6 +164,11 @@ function App() {
       </div>
     </div>
   );
+
+  // 如果图片还在加载中，显示加载屏幕
+  if (!imagesLoaded) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div className="min-h-screen bg-main-gradient">
