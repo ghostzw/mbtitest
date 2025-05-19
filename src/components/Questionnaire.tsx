@@ -33,10 +33,12 @@ const Questionnaire: React.FC<{
   const [hoveredOption, setHoveredOption] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [activeOption, setActiveOption] = useState<number | null>(null);
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+      const isMobileDevice = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      setIsMobile(isMobileDevice);
     };
     
     checkMobile();
@@ -91,6 +93,18 @@ const Questionnaire: React.FC<{
     setHoveredOption(null);
   };
 
+  const handleOptionClick = (index: number) => {
+    if (isMobile) {
+      setActiveOption(index);
+      setTimeout(() => {
+        setActiveOption(null);
+        handleAnswer(index);
+      }, 150);
+    } else {
+      handleAnswer(index);
+    }
+  };
+
   const currentQuestion = questions[currentQuestionIndex];
 
   return (
@@ -125,9 +139,11 @@ const Questionnaire: React.FC<{
                   ? 'bg-[#23213a] border-blue-400 text-white shadow-lg'
                   : hoveredOption === index && !isMobile
                     ? 'bg-[#23213a]/80 border-blue-300 text-gray-200'
-                    : 'bg-[#181726] border-[#35334a] text-gray-200'}
+                    : activeOption === index && isMobile
+                      ? 'bg-[#23213a]/80 border-blue-300 text-gray-200'
+                      : 'bg-[#181726] border-[#35334a] text-gray-200'}
               `}
-              onClick={() => handleAnswer(index)}
+              onClick={() => handleOptionClick(index)}
               onMouseEnter={() => handleOptionHover(index)}
               onMouseLeave={handleOptionLeave}
             >
