@@ -37,18 +37,26 @@ const Questionnaire: React.FC<{
 
   useEffect(() => {
     const checkMobile = () => {
-      const isMobileDevice = window.innerWidth <= 768 || 
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+      const userAgent = navigator.userAgent.toLowerCase();
+      const isMobileDevice = 
+        window.innerWidth <= 768 || 
+        /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|micromessenger/i.test(userAgent) ||
         ('ontouchstart' in window) ||
-        (navigator.maxTouchPoints > 0);
+        (navigator.maxTouchPoints > 0) ||
+        (window.matchMedia && window.matchMedia('(pointer:coarse)').matches) ||
+        (window.matchMedia && window.matchMedia('(hover: none)').matches) ||
+        (window.matchMedia && window.matchMedia('(any-hover: none)').matches);
+      
       setIsMobile(isMobileDevice);
     };
     
     checkMobile();
     window.addEventListener('resize', checkMobile);
+    window.addEventListener('orientationchange', checkMobile);
     
     return () => {
       window.removeEventListener('resize', checkMobile);
+      window.removeEventListener('orientationchange', checkMobile);
       if (hoverTimeout) {
         clearTimeout(hoverTimeout);
       }
@@ -76,7 +84,12 @@ const Questionnaire: React.FC<{
   };
 
   const handleOptionHover = (index: number) => {
-    if (isMobile || 'ontouchstart' in window) return;
+    if (isMobile || 
+        'ontouchstart' in window || 
+        (window.matchMedia && window.matchMedia('(pointer:coarse)').matches) ||
+        (window.matchMedia && window.matchMedia('(hover: none)').matches)) {
+      return;
+    }
     
     if (hoverTimeout) {
       clearTimeout(hoverTimeout);
@@ -102,7 +115,7 @@ const Questionnaire: React.FC<{
       setTimeout(() => {
         setActiveOption(null);
         handleAnswer(index);
-      }, 500);
+      }, 300);
     } else {
       handleAnswer(index);
     }
