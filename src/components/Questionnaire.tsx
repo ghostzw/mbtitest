@@ -37,7 +37,10 @@ const Questionnaire: React.FC<{
 
   useEffect(() => {
     const checkMobile = () => {
-      const isMobileDevice = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const isMobileDevice = window.innerWidth <= 768 || 
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+        ('ontouchstart' in window) ||
+        (navigator.maxTouchPoints > 0);
       setIsMobile(isMobileDevice);
     };
     
@@ -73,7 +76,7 @@ const Questionnaire: React.FC<{
   };
 
   const handleOptionHover = (index: number) => {
-    if (isMobile) return;
+    if (isMobile || 'ontouchstart' in window) return;
     
     if (hoverTimeout) {
       clearTimeout(hoverTimeout);
@@ -99,7 +102,7 @@ const Questionnaire: React.FC<{
       setTimeout(() => {
         setActiveOption(null);
         handleAnswer(index);
-      }, 150);
+      }, 500);
     } else {
       handleAnswer(index);
     }
