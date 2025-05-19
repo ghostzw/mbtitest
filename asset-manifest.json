@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/mbtitest/static/css/main.10574476.css",
-    "main.js": "/mbtitest/static/js/main.9e224f57.js",
+    "main.css": "/mbtitest/static/css/main.b4eeab24.css",
+    "main.js": "/mbtitest/static/js/main.3c40b7e2.js",
     "static/js/453.49dbb4a3.chunk.js": "/mbtitest/static/js/453.49dbb4a3.chunk.js",
-    "static/media/question7.png": "/mbtitest/static/media/question7.4a9d31f13041625d5e53.png",
-    "static/media/question8.png": "/mbtitest/static/media/question8.ba63c6ab3ddd8d2aaa40.png",
-    "static/media/question4.png": "/mbtitest/static/media/question4.f0fdd6e2be02198ec25d.png",
-    "static/media/question2.png": "/mbtitest/static/media/question2.deeb0fd2cb28d155873d.png",
-    "static/media/question6.png": "/mbtitest/static/media/question6.ca55ff6baec547fd67f7.png",
-    "static/media/question9.png": "/mbtitest/static/media/question9.474197794cc4739caa9a.png",
-    "static/media/question10.png": "/mbtitest/static/media/question10.5236081cb35f81503000.png",
-    "static/media/question5.png": "/mbtitest/static/media/question5.b198c0b9b8b148ea8c7f.png",
-    "static/media/question3.png": "/mbtitest/static/media/question3.33d1fefe22c852f9dc80.png",
-    "static/media/question1.png": "/mbtitest/static/media/question1.66fe734134f8fe7ce6b5.png",
+    "static/media/question3.webp": "/mbtitest/static/media/question3.1a87306ee80cf3675578.webp",
+    "static/media/question7.webp": "/mbtitest/static/media/question7.ebfa606d356fbba8a399.webp",
+    "static/media/question2.webp": "/mbtitest/static/media/question2.a142ac537b9c16c660dc.webp",
+    "static/media/question4.webp": "/mbtitest/static/media/question4.1c7679e20acfa6b01a14.webp",
+    "static/media/question1.webp": "/mbtitest/static/media/question1.55d7541398c1a9667636.webp",
+    "static/media/question8.webp": "/mbtitest/static/media/question8.c59ee2c1bf9b0a001322.webp",
+    "static/media/question10.webp": "/mbtitest/static/media/question10.2bca91d6df0d45e58262.webp",
+    "static/media/question6.webp": "/mbtitest/static/media/question6.248c4de54650085abc41.webp",
+    "static/media/question5.webp": "/mbtitest/static/media/question5.5223c6a6862bfce3bb6e.webp",
+    "static/media/question9.webp": "/mbtitest/static/media/question9.366c2ead825bfa58f90a.webp",
     "index.html": "/mbtitest/index.html",
-    "main.10574476.css.map": "/mbtitest/static/css/main.10574476.css.map",
-    "main.9e224f57.js.map": "/mbtitest/static/js/main.9e224f57.js.map",
+    "main.b4eeab24.css.map": "/mbtitest/static/css/main.b4eeab24.css.map",
+    "main.3c40b7e2.js.map": "/mbtitest/static/js/main.3c40b7e2.js.map",
     "453.49dbb4a3.chunk.js.map": "/mbtitest/static/js/453.49dbb4a3.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.10574476.css",
-    "static/js/main.9e224f57.js"
+    "static/css/main.b4eeab24.css",
+    "static/js/main.3c40b7e2.js"
   ]
 }
