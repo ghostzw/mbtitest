@@ -32,9 +32,8 @@ const Questionnaire: React.FC<{
   const [answers, setAnswers] = useState<number[]>([]);
   const [hoveredOption, setHoveredOption] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
 
-  // 检测是否为移动设备
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -43,21 +42,22 @@ const Questionnaire: React.FC<{
     checkMobile();
     window.addEventListener('resize', checkMobile);
     
-    return () => window.removeEventListener('resize', checkMobile);
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      if (hoverTimeout) {
+        clearTimeout(hoverTimeout);
+      }
+    };
   }, []);
 
   const handleAnswer = (optionIndex: number) => {
     const newAnswers = [...answers];
     newAnswers[currentQuestionIndex] = optionIndex;
     setAnswers(newAnswers);
-    setIsTransitioning(true);
     setHoveredOption(null);
 
     if (currentQuestionIndex < questions.length - 1) {
-      setTimeout(() => {
-        setCurrentQuestionIndex(currentQuestionIndex + 1);
-        setIsTransitioning(false);
-      }, 300);
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
       onComplete(newAnswers);
     }
@@ -65,25 +65,30 @@ const Questionnaire: React.FC<{
 
   const handlePrevious = () => {
     if (currentQuestionIndex > 0) {
-      setIsTransitioning(true);
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
       setHoveredOption(null);
-      setTimeout(() => {
-        setCurrentQuestionIndex(currentQuestionIndex - 1);
-        setIsTransitioning(false);
-      }, 300);
     }
   };
 
   const handleOptionHover = (index: number) => {
-    if (!isMobile && !isTransitioning) {
-      setHoveredOption(index);
+    if (isMobile) return;
+    
+    if (hoverTimeout) {
+      clearTimeout(hoverTimeout);
     }
+    
+    const timeout = setTimeout(() => {
+      setHoveredOption(index);
+    }, 150);
+    
+    setHoverTimeout(timeout);
   };
 
   const handleOptionLeave = () => {
-    if (!isMobile && !isTransitioning) {
-      setHoveredOption(null);
+    if (hoverTimeout) {
+      clearTimeout(hoverTimeout);
     }
+    setHoveredOption(null);
   };
 
   const currentQuestion = questions[currentQuestionIndex];
@@ -93,7 +98,7 @@ const Questionnaire: React.FC<{
       <div className="mb-3 md:mb-4">
         <div className="w-full bg-[#23213a] rounded-full h-2 md:h-2.5">
           <div
-            className="bg-blue-600 h-2 md:h-2.5 rounded-full transition-all duration-300"
+            className="bg-blue-600 h-2 md:h-2.5 rounded-full"
             style={{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }}
           ></div>
         </div>
@@ -107,29 +112,20 @@ const Questionnaire: React.FC<{
           <img
             src={questionImages[currentQuestionIndex]}
             alt={`问题 ${currentQuestionIndex + 1} 配图`}
-            className="w-full h-full object-contain rounded-lg transition-opacity duration-300"
-            loading="lazy"
-            onLoad={(e) => {
-              (e.target as HTMLImageElement).style.opacity = '1';
-            }}
-            style={{ opacity: 0 }}
+            className="w-full h-full object-contain rounded-lg"
           />
-          <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-lg">
-            <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-          </div>
         </div>
         <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-white drop-shadow">{currentQuestion.text}</h2>
         <div className="space-y-3 md:space-y-4">
           {currentQuestion.options.map((option, index) => (
             <button
               key={index}
-              className={`w-full p-3 md:p-4 rounded-xl md:rounded-2xl border text-base md:text-lg font-medium transition-all duration-300
+              className={`w-full p-3 md:p-4 rounded-xl md:rounded-2xl border text-base md:text-lg font-medium transition-all
                 ${answers[currentQuestionIndex] === index
                   ? 'bg-[#23213a] border-blue-400 text-white shadow-lg'
                   : hoveredOption === index && !isMobile
-                    ? 'bg-[#23213a]/80 border-blue-300 text-white'
-                    : 'bg-[#181726] border-[#35334a] text-gray-200'
-                }
+                    ? 'bg-[#23213a]/80 border-blue-300 text-gray-200'
+                    : 'bg-[#181726] border-[#35334a] text-gray-200'}
               `}
               onClick={() => handleAnswer(index)}
               onMouseEnter={() => handleOptionHover(index)}
