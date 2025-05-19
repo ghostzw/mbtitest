@@ -5,16 +5,16 @@ import { mbtiResults } from './data/mbtiData';
 import './index.css';
 import Player from 'lottie-react';
 import loadingLottie from './assets/lottie/loading.json';
-import question1Image from './assets/questions/question1.png';
-import question2Image from './assets/questions/question2.png';
-import question3Image from './assets/questions/question3.png';
-import question4Image from './assets/questions/question4.png';
-import question5Image from './assets/questions/question5.png';
-import question6Image from './assets/questions/question6.png';
-import question7Image from './assets/questions/question7.png';
-import question8Image from './assets/questions/question8.png';
-import question9Image from './assets/questions/question9.png';
-import question10Image from './assets/questions/question10.png';
+import question1Image from './assets/images/optimized/question1.webp';
+import question2Image from './assets/images/optimized/question2.webp';
+import question3Image from './assets/images/optimized/question3.webp';
+import question4Image from './assets/images/optimized/question4.webp';
+import question5Image from './assets/images/optimized/question5.webp';
+import question6Image from './assets/images/optimized/question6.webp';
+import question7Image from './assets/images/optimized/question7.webp';
+import question8Image from './assets/images/optimized/question8.webp';
+import question9Image from './assets/images/optimized/question9.webp';
+import question10Image from './assets/images/optimized/question10.webp';
 
 function App() {
   const [answers, setAnswers] = useState<number[] | null>(null);
@@ -37,10 +37,25 @@ function App() {
       question10Image,
     ];
 
-    questionImages.forEach(src => {
-      const img = new Image();
-      img.src = src;
-    });
+    const preloadImages = async () => {
+      const promises = questionImages.map(src => {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = resolve;
+          img.onerror = reject;
+          img.src = src;
+        });
+      });
+
+      try {
+        await Promise.all(promises);
+        console.log('所有图片预加载完成');
+      } catch (error) {
+        console.error('图片预加载失败:', error);
+      }
+    };
+
+    preloadImages();
   }, []);
 
   const calculateMbtiType = (answers: number[]): string => {

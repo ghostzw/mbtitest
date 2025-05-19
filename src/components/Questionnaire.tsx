@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { questions } from '../data/mbtiData';
 import { Question } from '../types/mbti';
-import question1Image from '../assets/questions/question1.png';
-import question2Image from '../assets/questions/question2.png';
-import question3Image from '../assets/questions/question3.png';
-import question4Image from '../assets/questions/question4.png';
-import question5Image from '../assets/questions/question5.png';
-import question6Image from '../assets/questions/question6.png';
-import question7Image from '../assets/questions/question7.png';
-import question8Image from '../assets/questions/question8.png';
-import question9Image from '../assets/questions/question9.png';
-import question10Image from '../assets/questions/question10.png';
+import question1Image from '../assets/images/optimized/question1.webp';
+import question2Image from '../assets/images/optimized/question2.webp';
+import question3Image from '../assets/images/optimized/question3.webp';
+import question4Image from '../assets/images/optimized/question4.webp';
+import question5Image from '../assets/images/optimized/question5.webp';
+import question6Image from '../assets/images/optimized/question6.webp';
+import question7Image from '../assets/images/optimized/question7.webp';
+import question8Image from '../assets/images/optimized/question8.webp';
+import question9Image from '../assets/images/optimized/question9.webp';
+import question10Image from '../assets/images/optimized/question10.webp';
 
 const questionImages = [
   question1Image,
@@ -66,11 +66,21 @@ const Questionnaire: React.FC<{
       </div>
 
       <div className="bg-black/70 rounded-2xl md:rounded-3xl shadow-2xl p-4 md:p-8">
-        <img
-          src={questionImages[currentQuestionIndex]}
-          alt={`问题 ${currentQuestionIndex + 1} 配图`}
-          className="w-full h-48 object-contain rounded-lg mb-4"
-        />
+        <div className="relative w-full h-48 mb-4">
+          <img
+            src={questionImages[currentQuestionIndex]}
+            alt={`问题 ${currentQuestionIndex + 1} 配图`}
+            className="w-full h-full object-contain rounded-lg transition-opacity duration-300"
+            loading="lazy"
+            onLoad={(e) => {
+              (e.target as HTMLImageElement).style.opacity = '1';
+            }}
+            style={{ opacity: 0 }}
+          />
+          <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-lg">
+            <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        </div>
         <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-white drop-shadow">{currentQuestion.text}</h2>
         <div className="space-y-3 md:space-y-4">
           {currentQuestion.options.map((option, index) => (
