@@ -79,14 +79,9 @@ const Questionnaire: React.FC<{
               className={`w-full p-3 md:p-4 rounded-xl md:rounded-2xl border text-base md:text-lg font-medium transition-all
                 ${answers[currentQuestionIndex] === index
                   ? 'bg-[#23213a] border-blue-400 text-white shadow-lg'
-                  : 'bg-[#181726] border-[#35334a] text-gray-200 active:bg-[#23213a]/80 active:border-blue-300'}
+                  : 'bg-[#181726] border-[#35334a] text-gray-200 hover:bg-[#23213a]/80 hover:border-blue-300'}
               `}
               onClick={() => handleAnswer(index)}
-              onTouchStart={(e) => {
-                // 阻止触摸事件的默认行为
-                e.preventDefault();
-                handleAnswer(index);
-              }}
             >
               {option}
             </button>
