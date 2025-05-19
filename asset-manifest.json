@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/mbtitest/static/css/main.b4eeab24.css",
-    "main.js": "/mbtitest/static/js/main.3c40b7e2.js",
+    "main.css": "/mbtitest/static/css/main.95ee0475.css",
+    "main.js": "/mbtitest/static/js/main.e5e321b6.js",
     "static/js/453.49dbb4a3.chunk.js": "/mbtitest/static/js/453.49dbb4a3.chunk.js",
     "static/media/question3.webp": "/mbtitest/static/media/question3.1a87306ee80cf3675578.webp",
     "static/media/question7.webp": "/mbtitest/static/media/question7.ebfa606d356fbba8a399.webp",
@@ -14,12 +14,12 @@
     "static/media/question5.webp": "/mbtitest/static/media/question5.5223c6a6862bfce3bb6e.webp",
     "static/media/question9.webp": "/mbtitest/static/media/question9.366c2ead825bfa58f90a.webp",
     "index.html": "/mbtitest/index.html",
-    "main.b4eeab24.css.map": "/mbtitest/static/css/main.b4eeab24.css.map",
-    "main.3c40b7e2.js.map": "/mbtitest/static/js/main.3c40b7e2.js.map",
+    "main.95ee0475.css.map": "/mbtitest/static/css/main.95ee0475.css.map",
+    "main.e5e321b6.js.map": "/mbtitest/static/js/main.e5e321b6.js.map",
     "453.49dbb4a3.chunk.js.map": "/mbtitest/static/js/453.49dbb4a3.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.b4eeab24.css",
-    "static/js/main.3c40b7e2.js"
+    "static/css/main.95ee0475.css",
+    "static/js/main.e5e321b6.js"
   ]
 }
