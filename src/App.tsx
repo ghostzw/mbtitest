@@ -129,7 +129,7 @@ function App() {
             }}
           />
         </div>
-        <div className="text-center mb-6 md:mb-8">
+        <div className="text-center mb-4 md:mb-6">
           <h1
             className="text-3xl md:text-5xl font-bold text-white mb-2 md:mb-4 tracking-wide drop-shadow-lg animate-fadein"
             style={{
@@ -144,8 +144,14 @@ function App() {
           <p className="text-base md:text-2xl text-purple-200 mb-4 md:mb-6 font-medium">
             解锁你的职场隐藏属性，看看你是哪种"办公室搭子"！
           </p>
+          <button
+            onClick={() => setShowIntro(false)}
+            className="px-8 md:px-12 py-3 md:py-4 bg-gradient-to-r from-white via-[#f3f3f3] to-[#e0e6f7] text-[#23213a] text-lg md:text-2xl rounded-full shadow-xl hover:shadow-2xl hover:border hover:border-[#bfc6e6] transition-all font-bold tracking-wide relative overflow-hidden shine-btn mb-6 md:mb-8"
+          >
+            <span className="relative z-10">开始测试 →</span>
+          </button>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-8 mb-4 md:mb-8 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-8 w-full">
           <div className="bg-gradient-to-br from-[#23213a]/80 to-[#2d2a4f]/80 p-3 md:p-6 rounded-2xl shadow-lg flex flex-col items-center">
             <div className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-[#3a3757]/80 flex items-center justify-center mb-2 md:mb-4 text-xl md:text-3xl">🎯</div>
             <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-2 text-white">真实场景体验</h3>
@@ -161,14 +167,6 @@ function App() {
             <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-2 text-white">智能搭档推荐</h3>
             <p className="text-xs md:text-base text-yellow-100 text-center">匹配最适合你的职场拍档，助你高效协作</p>
           </div>
-        </div>
-        <div className="text-center w-full mt-2 md:mt-4">
-          <button
-            onClick={() => setShowIntro(false)}
-            className="px-8 md:px-12 py-3 md:py-4 bg-gradient-to-r from-white via-[#f3f3f3] to-[#e0e6f7] text-[#23213a] text-lg md:text-2xl rounded-full shadow-xl hover:shadow-2xl hover:border hover:border-[#bfc6e6] transition-all font-bold tracking-wide relative overflow-hidden shine-btn"
-          >
-            <span className="relative z-10">开始测试 →</span>
-          </button>
         </div>
       </div>
     </div>
