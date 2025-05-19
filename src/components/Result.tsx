@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { MbtiType } from '../types/mbti';
 import { mbtiResults } from '../data/mbtiData';
 import resultBg from '../assets/images/optimized/result-bg.webp';
@@ -7,10 +6,10 @@ import resultBgMobile from '../assets/images/optimized/result-bg-mobile.webp';
 
 interface ResultProps {
   mbtiType: MbtiType;
+  onRestart: () => void;
 }
 
-const Result: React.FC<ResultProps> = ({ mbtiType }) => {
-  const navigate = useNavigate();
+const Result: React.FC<ResultProps> = ({ mbtiType, onRestart }) => {
   const result = mbtiResults[mbtiType];
 
   return (
@@ -45,7 +44,7 @@ const Result: React.FC<ResultProps> = ({ mbtiType }) => {
             
             <div className="mt-8 flex justify-center">
               <button
-                onClick={() => navigate('/')}
+                onClick={onRestart}
                 className="px-6 py-3 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-colors"
               >
                 重新测试

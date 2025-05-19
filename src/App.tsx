@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Questionnaire from './components/Questionnaire';
 import ResultCard from './components/ResultCard';
 import { mbtiResults } from './data/mbtiData';
+import { MbtiType } from './types/mbti';
 import './index.css';
 import Player from 'lottie-react';
 import loadingLottie from './assets/lottie/loading.json';
@@ -15,10 +16,11 @@ import question7Image from './assets/images/optimized/question7.webp';
 import question8Image from './assets/images/optimized/question8.webp';
 import question9Image from './assets/images/optimized/question9.webp';
 import question10Image from './assets/images/optimized/question10.webp';
+import Result from './components/Result';
 
 function App() {
   const [answers, setAnswers] = useState<number[] | null>(null);
-  const [mbtiType, setMbtiType] = useState<string | null>(null);
+  const [mbtiType, setMbtiType] = useState<MbtiType | null>(null);
   const [showIntro, setShowIntro] = useState(true);
   const [loading, setLoading] = useState(false);
 
@@ -58,7 +60,7 @@ function App() {
     preloadImages();
   }, []);
 
-  const calculateMbtiType = (answers: number[]): string => {
+  const calculateMbtiType = (answers: number[]): MbtiType => {
     // 根据 10 个问题计算 MBTI 类型
     // 问题 1-3: E/I
     // 问题 4-6: S/N
@@ -81,16 +83,16 @@ function App() {
       sCount > nCount ? 'S' : 'N',
       tCount > fCount ? 'T' : 'F',
       jCount > pCount ? 'J' : 'P'
-    ].join('');
+    ].join('') as MbtiType;
 
     return type;
   };
 
-  const findMbtiResult = (type: string) => {
+  const findMbtiResult = (type: MbtiType) => {
     // 返回 { key, result }
     const entry = Object.entries(mbtiResults).find(([key, result]) => result.code === type);
     if (!entry) return null;
-    return { key: entry[0], result: entry[1] };
+    return { key: entry[0] as MbtiType, result: entry[1] };
   };
 
   const handleComplete = (userAnswers: number[]) => {
@@ -206,8 +208,7 @@ function App() {
           console.log('mbtiType:', mbtiType);
           console.log('mbtiResult:', found);
           return found ? (
-            <ResultCard
-              result={found.result}
+            <Result
               mbtiType={found.key}
               onRestart={handleRestart}
             />

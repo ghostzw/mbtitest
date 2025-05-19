@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { questions } from '../data/mbtiData';
 import { Question } from '../types/mbti';
 import question1Image from '../assets/images/optimized/question1.webp';
@@ -30,14 +30,34 @@ const Questionnaire: React.FC<{
 }> = ({ onComplete }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
+  const [hoveredOption, setHoveredOption] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // 检测是否为移动设备
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleAnswer = (optionIndex: number) => {
     const newAnswers = [...answers];
     newAnswers[currentQuestionIndex] = optionIndex;
     setAnswers(newAnswers);
+    setIsTransitioning(true);
+    setHoveredOption(null);
 
     if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setTimeout(() => {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+        setIsTransitioning(false);
+      }, 300);
     } else {
       onComplete(newAnswers);
     }
@@ -45,7 +65,24 @@ const Questionnaire: React.FC<{
 
   const handlePrevious = () => {
     if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
+      setIsTransitioning(true);
+      setHoveredOption(null);
+      setTimeout(() => {
+        setCurrentQuestionIndex(currentQuestionIndex - 1);
+        setIsTransitioning(false);
+      }, 300);
+    }
+  };
+
+  const handleOptionHover = (index: number) => {
+    if (!isMobile && !isTransitioning) {
+      setHoveredOption(index);
+    }
+  };
+
+  const handleOptionLeave = () => {
+    if (!isMobile && !isTransitioning) {
+      setHoveredOption(null);
     }
   };
 
@@ -56,7 +93,7 @@ const Questionnaire: React.FC<{
       <div className="mb-3 md:mb-4">
         <div className="w-full bg-[#23213a] rounded-full h-2 md:h-2.5">
           <div
-            className="bg-blue-600 h-2 md:h-2.5 rounded-full"
+            className="bg-blue-600 h-2 md:h-2.5 rounded-full transition-all duration-300"
             style={{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }}
           ></div>
         </div>
@@ -86,12 +123,17 @@ const Questionnaire: React.FC<{
           {currentQuestion.options.map((option, index) => (
             <button
               key={index}
-              className={`w-full p-3 md:p-4 rounded-xl md:rounded-2xl border text-base md:text-lg font-medium transition-all
+              className={`w-full p-3 md:p-4 rounded-xl md:rounded-2xl border text-base md:text-lg font-medium transition-all duration-300
                 ${answers[currentQuestionIndex] === index
                   ? 'bg-[#23213a] border-blue-400 text-white shadow-lg'
-                  : 'bg-[#181726] border-[#35334a] text-gray-200 hover:bg-[#23213a]/80 hover:border-blue-300'}
+                  : hoveredOption === index && !isMobile
+                    ? 'bg-[#23213a]/80 border-blue-300 text-white'
+                    : 'bg-[#181726] border-[#35334a] text-gray-200'
+                }
               `}
               onClick={() => handleAnswer(index)}
+              onMouseEnter={() => handleOptionHover(index)}
+              onMouseLeave={handleOptionLeave}
             >
               {option}
             </button>
