@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { questions } from '../data/mbtiData';
 import { Question } from '../types/mbti';
 import question1Image from '../assets/questions/question1.png';
@@ -11,6 +11,19 @@ import question7Image from '../assets/questions/question7.png';
 import question8Image from '../assets/questions/question8.png';
 import question9Image from '../assets/questions/question9.png';
 import question10Image from '../assets/questions/question10.png';
+
+// 防抖函数
+const debounce = (func: Function, wait: number) => {
+  let timeout: NodeJS.Timeout;
+  return function executedFunction(...args: any[]) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+};
 
 const questionImages = [
   question1Image,
@@ -30,8 +43,12 @@ const Questionnaire: React.FC<{
 }> = ({ onComplete }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleAnswer = (optionIndex: number) => {
+    if (isProcessing) return;
+    
+    setIsProcessing(true);
     const newAnswers = [...answers];
     newAnswers[currentQuestionIndex] = optionIndex;
     setAnswers(newAnswers);
@@ -41,6 +58,11 @@ const Questionnaire: React.FC<{
     } else {
       onComplete(newAnswers);
     }
+
+    // 300ms 后重置处理状态
+    setTimeout(() => {
+      setIsProcessing(false);
+    }, 300);
   };
 
   const handlePrevious = () => {
@@ -81,7 +103,12 @@ const Questionnaire: React.FC<{
                   ? 'bg-[#23213a] border-blue-400 text-white shadow-lg'
                   : 'bg-[#181726] border-[#35334a] text-gray-200 hover:bg-[#23213a]/80 hover:border-blue-300'}
               `}
+              onTouchEnd={(e) => {
+                e.preventDefault();
+                handleAnswer(index);
+              }}
               onClick={() => handleAnswer(index)}
+              disabled={isProcessing}
             >
               {option}
             </button>
@@ -92,7 +119,7 @@ const Questionnaire: React.FC<{
           <button
             className="px-4 md:px-6 py-2 bg-white text-[#23213a] rounded-full shadow hover:shadow-lg font-bold text-sm md:text-base transition-all disabled:opacity-50"
             onClick={handlePrevious}
-            disabled={currentQuestionIndex === 0}
+            disabled={currentQuestionIndex === 0 || isProcessing}
           >
             上一题
           </button>
@@ -105,7 +132,7 @@ const Questionnaire: React.FC<{
                 onComplete(answers);
               }
             }}
-            disabled={answers[currentQuestionIndex] === undefined}
+            disabled={answers[currentQuestionIndex] === undefined || isProcessing}
           >
             {currentQuestionIndex === questions.length - 1 ? '提交答卷' : '下一题'}
           </button>
